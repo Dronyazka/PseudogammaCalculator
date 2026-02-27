@@ -397,7 +397,7 @@ def _ulgenes_series_value(x):
     if key in _ul_cache:
         return _ul_cache[key]
 
-    max_n = 125
+    max_n = 250
     # absolute floor and small relative threshold
     abs_floor = mp.power(10, -max(8, int(mp.dps/3)))
     # relative factor for stopping (terms negligible compared to accumulated sum)
