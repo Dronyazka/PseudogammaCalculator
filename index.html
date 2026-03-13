@@ -67,8 +67,8 @@ input::placeholder{color:rgba(230,238,248,.45);}
 
     <div class="box"><div class="label">Euler gamma function</div><div id="outGamma" class="out">—</div></div>
     <div class="box"><div class="label">Hadamard's gamma function</div><div id="outHad" class="out">—</div></div>
-    <div class="box"><div class="label">Luschny factorial</div><div id="outLus" class="out">—</div></div>
-    <div class="box"><div class="label">Klimek's K-function</div><div id="outKli" class="out">—</div></div>
+    <div class="box"><div class="label">Luschny's factorial function</div><div id="outLus" class="out">—</div></div>
+    <div class="box"><div class="label">Klimek's factorial function</div><div id="outKli" class="out">—</div></div>
     <div class="box"><div class="label">Ulgenes' lambda function</div><div id="outUl" class="out">—</div></div>
 
     <pre id="errorBox"></pre>
@@ -174,7 +174,7 @@ function toHyphenMinus(s){ return s.replace(/−/g, '-'); }
 
 const pythonComputeModule = `
 from mpmath import mp, mpf, mpc, nstr, sin, pi, gamma, log, exp, binomial, ff, rf
-mp.dps = 250
+mp.dps = 256
 
 def _make_digamma():
     try:
@@ -440,7 +440,7 @@ def _ulgenes_series_value(x):
         return _ul_cache[key]
 
     term_floor = mp.power(10, -30)
-    max_n = 180
+    max_n = 200
     S = mp.mpf('0')
     top = x
 
@@ -543,7 +543,7 @@ def _two_arg_limit(f, x, y, op, eps=None):
     return sum(vals) / len(vals)
 
 def compute_partial(x_str, y_str, op):
-    mp.dps = 250
+    mp.dps = 256
     try:
         x = parse_input(x_str)
     except Exception as e:
@@ -618,7 +618,7 @@ def compute_partial(x_str, y_str, op):
     return tuple(outputs) + (bool(is_pos),)
 
 def compute_ulgenes(x_str, y_str, op):
-    mp.dps = 250
+    mp.dps = 256
     try:
         x = parse_input(x_str)
     except Exception as e:
