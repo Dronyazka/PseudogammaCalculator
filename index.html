@@ -440,7 +440,7 @@ def _ulgenes_series_value(x):
         return _ul_cache[key]
 
     term_floor = mp.power(10, -30)
-    max_n = 512
+    max_n = 256
     S = mp.mpf('0')
     top = x
 
@@ -618,7 +618,7 @@ def compute_partial(x_str, y_str, op):
     return tuple(outputs) + (bool(is_pos),)
 
 def compute_ulgenes(x_str, y_str, op):
-    mp.dps = 64
+    mp.dps = 256
     try:
         x = parse_input(x_str)
     except Exception as e:
