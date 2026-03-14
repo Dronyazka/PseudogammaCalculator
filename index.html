@@ -174,7 +174,7 @@ function toHyphenMinus(s){ return s.replace(/−/g, '-'); }
 
 const pythonComputeModule = `
 from mpmath import mp, mpf, mpc, nstr, sin, pi, gamma, log, exp, binomial, ff, rf
-mp.dps = 128
+mp.dps = 256
 
 def _make_digamma():
     try:
@@ -543,7 +543,7 @@ def _two_arg_limit(f, x, y, op, eps=None):
     return sum(vals) / len(vals)
 
 def compute_partial(x_str, y_str, op):
-    mp.dps = 128
+    mp.dps = 256
     try:
         x = parse_input(x_str)
     except Exception as e:
@@ -618,7 +618,7 @@ def compute_partial(x_str, y_str, op):
     return tuple(outputs) + (bool(is_pos),)
 
 def compute_ulgenes(x_str, y_str, op):
-    mp.dps = 128
+    mp.dps = 64
     try:
         x = parse_input(x_str)
     except Exception as e:
