@@ -174,7 +174,7 @@ function toHyphenMinus(s){ return s.replace(/−/g, '-'); }
 
 const pythonComputeModule = `
 from mpmath import mp, mpf, mpc, nstr, sin, pi, gamma, log, exp, binomial, ff, rf
-mp.dps = 256
+mp.dps = 128
 
 def _make_digamma():
     try:
@@ -439,35 +439,34 @@ def _ulgenes_series_value(x):
     if key in _ul_cache:
         return _ul_cache[key]
 
-    term_floor = mp.power(10, -30)
-    max_n = 256
-    S = mp.mpf('0')
-    top = x
+    with mp.workdps(64):
+        term_floor = mp.power(10, -30)
+        max_n = 256
+        S = mp.mpf('0')
+        top = x
+        n = 1
 
-    for n in range(1, max_n + 1):
-        _ensure_inner_cache(n)
-        inner = _inner_cache[n]
-        denom = mp.mpf(2*n - 1)
-        term = top * (inner / denom)
+        while n <= max_n:
+            _ensure_inner_cache(n)
+            inner = _inner_cache[n]
+            denom = mp.mpf(2*n - 1)
+            term = top * (inner / denom)
 
-        if mp.isnan(term) or mp.isinf(term):
-            _ul_cache[key] = mp.mpf('inf')
-            return _ul_cache[key]
+            if mp.isnan(term) or mp.isinf(term):
+                _ul_cache[key] = mp.mpf('inf')
+                return _ul_cache[key]
 
-        S = S + term
+            S = S + term
 
-        if abs(S) > mp.mpf('1e300'):
-            _ul_cache[key] = mp.mpf('inf')
-            return _ul_cache[key]
+            if n > 1 and abs(term) < term_floor:
+                break
 
-        if n > 1 and abs(term) < term_floor:
-            break
-
-        R = (x + n) * (x - n) / (mp.mpf(2*n + 1) * mp.mpf(2*n))
-        top = top * R
+            R = (x + n) * (x - n) / (mp.mpf(2*n + 1) * mp.mpf(2*n))
+            top = top * R
+            n += 1
 
     try:
-        val = mp.exp(S)
+        val = mp.exp(+S)
     except Exception:
         val = mp.mpf('inf')
 
@@ -543,7 +542,7 @@ def _two_arg_limit(f, x, y, op, eps=None):
     return sum(vals) / len(vals)
 
 def compute_partial(x_str, y_str, op):
-    mp.dps = 256
+    mp.dps = 128
     try:
         x = parse_input(x_str)
     except Exception as e:
@@ -618,7 +617,7 @@ def compute_partial(x_str, y_str, op):
     return tuple(outputs) + (bool(is_pos),)
 
 def compute_ulgenes(x_str, y_str, op):
-    mp.dps = 256
+    mp.dps = 128
     try:
         x = parse_input(x_str)
     except Exception as e:
