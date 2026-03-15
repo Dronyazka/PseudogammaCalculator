@@ -205,8 +205,8 @@ def _make_digamma():
 
 digamma = _make_digamma()
 
-DECIMAL_PLACES = 30
-SCI_SIG_DIGITS = 30
+DECIMAL_PLACES = 15
+SCI_SIG_DIGITS = 15
 LOWER_FIXED_BOUND = mp.mpf('1e-10')
 UPPER_FIXED_BOUND = mp.mpf('1e15')
 INT_TOL = mp.power(10, -20)
@@ -439,7 +439,7 @@ def _ulgenes_series_value(x):
     if key in _ul_cache:
         return _ul_cache[key]
 
-    with mp.workdps(64):
+    with mp.workdps(128):
         term_floor = mp.power(10, -30)
         max_n = 256
         S = mp.mpf('0')
